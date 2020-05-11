@@ -19,33 +19,55 @@ public class PlayerMovement : MonoBehaviour
 
     public float health = 100f;
 
+    public bool isAlive = true;
+    public Camera deathCam;
+
+    private void Start()
+    {
+        deathCam.enabled = false;
+    }
+
+
     // Update is called once per frame
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-        if(isGrounded && velocity.y < 0)
+        if (isAlive)
         {
-            velocity.y = -2f;
-        }
+            isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+            if (isGrounded && velocity.y < 0)
+            {
+                velocity.y = -2f;
+            }
 
-        Vector3 move = transform.right * x + transform.forward * z;
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
 
-        controller.Move(move * speed * Time.deltaTime);
+            Vector3 move = transform.right * x + transform.forward * z;
 
-        if(Input.GetButtonDown("Jump") && isGrounded)
+            controller.Move(move * speed * Time.deltaTime);
+
+            if (Input.GetButtonDown("Jump") && isGrounded)
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
+
+            velocity.y += gravity * Time.deltaTime;
+
+            controller.Move(velocity * Time.deltaTime);
+        }   
+
+
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.name == "Collider")
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            TakeDamage(10f);
         }
-
-        velocity.y += gravity * Time.deltaTime;
-
-        controller.Move(velocity * Time.deltaTime);
-
-
+            
     }
 
     public void TakeDamage(float amount)
@@ -61,6 +83,8 @@ public class PlayerMovement : MonoBehaviour
     void Die()
     {
         Debug.Log("You Die!!!");
-
+        isAlive = false;
+        deathCam.enabled = true;
+        Destroy(gameObject, 0.5f);
     }
 }

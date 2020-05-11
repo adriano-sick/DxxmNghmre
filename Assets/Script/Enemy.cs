@@ -46,48 +46,53 @@ public class Enemy : MonoBehaviour
     {
         enemyAnim.Idle();
         
-
-        if (meshNav.enabled)
+        if(GameObject.Find("First Person Player") != null)
         {
-            float dist = Vector3.Distance(player.transform.position, this.transform.position);
-            bool shoot = false;
-            bool follow = (dist < followDistance);
-            
-                           
-
-            if (follow)
+            if (meshNav.enabled)
             {
-                float random = Random.Range(0.0f, 1.0f);
-                if (random > (1.0f - attackProbability) && dist < attackDistance)
+                float dist = Vector3.Distance(player.transform.position, this.transform.position);
+                bool shoot = false;
+                bool follow = (dist < followDistance);
+
+                if (follow)
                 {
-                    ShootEvent();
-                    GameObject temp = Instantiate(fire, gameObject.transform.position + fireOffset, transform.rotation) as GameObject;
-                    temp.transform.SetParent(transform);
+                    float random = Random.Range(0.0f, 1.0f);
+                    if (random > (1.0f - attackProbability) && dist < attackDistance)
+                    {
+                        ShootEvent();
+                        
+
+                    }
+                }
+
+                if (follow)
+                {
+                    meshNav.SetDestination(player.transform.position);
+                    enemyAnim.Run();
+
+                    //enemySound.PlayOneShot(followSound, 1f);
                 }
             }
-
-            if (follow)
-            {
-                meshNav.SetDestination(player.transform.position);
-                enemyAnim.Run();
-
-                //enemySound.PlayOneShot(followSound, 1f);
-            }
-
-            
         }
+        
 
         
     }
 
     public void ShootEvent()
     {
+        if (GameObject.Find("WFX_FlameThrower Big(Clone)") == null)
+        {
+            GameObject temp = Instantiate(fire, gameObject.transform.position + fireOffset, transform.rotation) as GameObject;
+            temp.transform.SetParent(transform);
+        }
+
         if (enemySound != null)
         {
             enemySound.PlayOneShot(GunSound);
         }
 
-        float random = Random.Range(0.0f, 1.0f);
+       /* float random = Random.Range(0.0f, 1.0f);
 
         bool isHit = random > 1.0f - hitAccuracy;
 
@@ -97,7 +102,7 @@ public class Enemy : MonoBehaviour
         if (isHit)
         {
             playerScript.TakeDamage(damagePoints);
-        }
+        }*/
     }
         
     public void TakeDamage (float amount)

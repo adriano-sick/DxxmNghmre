@@ -23,18 +23,19 @@ public class Gun : MonoBehaviour
     public float SFXVol = 1f;
 
    void Start()
-    {
+   {
         gunSound = GetComponent<AudioSource>();
-    }
+                        
+   }
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Fire1")  && Time.time >= nextTimeToFire)
+        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
         }
-        
+
     }
 
     void Shoot()
