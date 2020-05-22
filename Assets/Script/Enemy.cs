@@ -26,11 +26,8 @@ public class Enemy : MonoBehaviour
     public Vector3 fireOffset = new Vector3(0, 3, 0);
 
 
-
-    // Start is called before the first frame update
     void Start()
     {
-
         meshNav = GetComponent<NavMeshAgent>();
         enemySound = GetComponent<AudioSource>();
         enemyAnim = GetComponent<buttonControl_script>();
@@ -39,10 +36,8 @@ public class Enemy : MonoBehaviour
         {
             enemyAnim.Idle();
         }
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         enemyAnim.Idle();
@@ -68,39 +63,24 @@ public class Enemy : MonoBehaviour
 
                     }
 
-
                 }
                               
             }
-        }     
-
+        } 
         
     }
 
     public void ShootEvent()
-    {
-        //if (GameObject.Find("WFX_FlameThrower Big(Clone)") == null)
-        //{
+    {        
             GameObject temp = Instantiate(fire, gameObject.transform.position + fireOffset, transform.rotation) as GameObject;
             temp.transform.SetParent(transform);
-        //}
+        
 
         if (enemySound != null && !enemySound.isPlaying)
         {
             enemySound.PlayOneShot(GunSound);
         }
-
-       /* float random = Random.Range(0.0f, 1.0f);
-
-        bool isHit = random > 1.0f - hitAccuracy;
-
-        PlayerMovement playerScript = GetComponent<PlayerMovement>();
-        
-
-        if (isHit)
-        {
-            playerScript.TakeDamage(damagePoints);
-        }*/
+      
     }
         
     public void TakeDamage (float amount)
