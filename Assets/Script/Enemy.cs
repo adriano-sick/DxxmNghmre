@@ -47,14 +47,12 @@ public class Enemy : MonoBehaviour
             if (meshNav.enabled)
             {
                 float dist = Vector3.Distance(player.transform.position, this.transform.position);
-                bool shoot = false;
                 bool follow = (dist < followDistance);
-
                 
                 if (follow)
                 {
-                    meshNav.SetDestination(player.transform.position);
-                    enemyAnim.Run();
+                    
+                    meshNav.SetDestination(player.transform.position);                    
                     
                     float random = Random.Range(0.0f, 1.0f);
                     if (random > (1.0f - attackProbability) && dist < attackDistance)
