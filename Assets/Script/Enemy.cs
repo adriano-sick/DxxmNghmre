@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent meshNav;
     public GameObject player;
     public float followDistance = 20.0f;
+    public float limitDistance = 2.0f;
     public float attackDistance = 10.0f;
     [Range(0.0f, 1.0f)]
     public float attackProbability = 50f;
@@ -54,40 +55,37 @@ public class Enemy : MonoBehaviour
                 bool shoot = false;
                 bool follow = (dist < followDistance);
 
-                if (follow)
-                {
-                    float random = Random.Range(0.0f, 1.0f);
-                    if (random > (1.0f - attackProbability) && dist < attackDistance)
-                    {
-                        ShootEvent();
-                        
-
-                    }
-                }
-
+                
                 if (follow)
                 {
                     meshNav.SetDestination(player.transform.position);
                     enemyAnim.Run();
+                    
+                    float random = Random.Range(0.0f, 1.0f);
+                    if (random > (1.0f - attackProbability) && dist < attackDistance)
+                    {
+                        ShootEvent();                      
 
-                    //enemySound.PlayOneShot(followSound, 1f);
+                    }
+
+
                 }
+                              
             }
-        }
-        
+        }     
 
         
     }
 
     public void ShootEvent()
     {
-        if (GameObject.Find("WFX_FlameThrower Big(Clone)") == null)
-        {
+        //if (GameObject.Find("WFX_FlameThrower Big(Clone)") == null)
+        //{
             GameObject temp = Instantiate(fire, gameObject.transform.position + fireOffset, transform.rotation) as GameObject;
             temp.transform.SetParent(transform);
-        }
+        //}
 
-        if (enemySound != null)
+        if (enemySound != null && !enemySound.isPlaying)
         {
             enemySound.PlayOneShot(GunSound);
         }

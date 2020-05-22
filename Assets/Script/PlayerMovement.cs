@@ -20,11 +20,11 @@ public class PlayerMovement : MonoBehaviour
     public float health = 100f;
 
     public bool isAlive = true;
-    public Camera deathCam;
+    public GameObject deathCam;
 
     private void Start()
     {
-        deathCam.enabled = false;
+        deathCam.SetActive(false);
     }
 
 
@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("You Die!!!");
         isAlive = false;
-        deathCam.enabled = true;
-        Destroy(gameObject, 0.5f);
+        deathCam.SetActive(true);
+        Destroy(gameObject, 0f);
     }
 }
