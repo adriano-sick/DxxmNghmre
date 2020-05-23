@@ -40,7 +40,11 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
-        muzzleFlash.Play();
+        if (!muzzleFlash.isPlaying)
+        {
+            muzzleFlash.Play();
+        }
+
         StartCoroutine(Flashlight());
         gunSound.PlayOneShot(gunShoot, SFXVol);
 
