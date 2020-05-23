@@ -23,17 +23,25 @@ public class buttonControl_script : MonoBehaviour
 		anim.SetBool("isRun", false);
 		anim.SetBool("crippled", false);
 		anim.SetBool("dancing", false);
+		anim.SetBool("takeDamage", false);
 	}
 
 	public void Run ()
 	{
-		anim.SetBool("isRun",!(anim.GetBool("isRun")));
+		//anim.SetBool("isRun",!(anim.GetBool("isRun")));
+		anim.SetBool("isRun", true);
 		anim.SetBool("isIdle", false);
+		anim.SetBool("takeDamage", false);
 
 	}
 
 	public void Dance()
 	{
 		anim.SetBool ("dancing", !(anim.GetBool("dancing")));
+	}
+
+	public void TakeDamage()
+	{		
+		anim.SetBool("takeDamage", true);
 	}
 }

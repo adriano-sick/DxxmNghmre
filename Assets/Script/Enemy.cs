@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     public GameObject player;
     public float followDistance = 20.0f;
     public float limitDistance = 2.0f;
-    public float attackDistance = 10.0f;
+    public float attackDistance = 6.0f;
     [Range(0.0f, 1.0f)]
     public float attackProbability = 50f;
     [Range(0.0f, 1.0f)]
@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        enemyAnim.Idle();
+        //enemyAnim.Idle();
         
         if(GameObject.Find("First Person Player") != null)
         {
@@ -52,8 +52,9 @@ public class Enemy : MonoBehaviour
                 if (follow)
                 {
                     
-                    meshNav.SetDestination(player.transform.position);                    
-                    
+                    meshNav.SetDestination(player.transform.position);
+                    enemyAnim.Run();                    
+                        
                     float random = Random.Range(0.0f, 1.0f);
                     if (random > (1.0f - attackProbability) && dist < attackDistance)
                     {
@@ -64,7 +65,12 @@ public class Enemy : MonoBehaviour
                 }
                               
             }
-        } 
+        }
+
+        else if(GameObject.Find("First Person Player") == null)
+        {
+            enemyAnim.Dance();
+        }
         
     }
 
@@ -72,7 +78,8 @@ public class Enemy : MonoBehaviour
     {        
             GameObject temp = Instantiate(fire, gameObject.transform.position + fireOffset, transform.rotation) as GameObject;
             temp.transform.SetParent(transform);
-        
+       
+
 
         if (enemySound != null && !enemySound.isPlaying)
         {
@@ -83,11 +90,13 @@ public class Enemy : MonoBehaviour
         
     public void TakeDamage (float amount)
     {
-        health -= amount;
+        enemyAnim.TakeDamage();
+        health -= amount;        
         if (health <= 0f)
         {
             Die();
         }
+
     }
 
     void Die()
