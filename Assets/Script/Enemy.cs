@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -24,6 +25,7 @@ public class Enemy : MonoBehaviour
     private AudioSource enemySound;
     public GameObject fire;
     public Vector3 fireOffset = new Vector3(0, 3, 0);
+    private bool isShooting = false;
 
 
     void Start()
@@ -40,9 +42,10 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        //enemyAnim.Idle();
+        //enemyAnim.Idle(); NEED TO SOLVE ANIMATIONS PROBLEMS!!!
         
-        if(GameObject.Find("First Person Player") != null)
+
+            if (GameObject.Find("First Person Player") != null)
         {
             if (meshNav.enabled)
             {
@@ -75,11 +78,15 @@ public class Enemy : MonoBehaviour
     }
 
     public void ShootEvent()
-    {        
-            GameObject temp = Instantiate(fire, gameObject.transform.position + fireOffset, transform.rotation) as GameObject;
-            temp.transform.SetParent(transform);
-       
-
+    {
+        if(transform.childCount < 3)
+        {
+           GameObject temp = Instantiate(fire, gameObject.transform.position + fireOffset, transform.rotation) as GameObject;
+           temp.transform.SetParent(transform);
+        }
+         
+        
+        
 
         if (enemySound != null && !enemySound.isPlaying)
         {
