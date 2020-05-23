@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("You Die!!!");
         isAlive = false;
         deathCam.SetActive(true);
+        GameObject.Find("Canvas").SetActive(false);
         Destroy(gameObject, 0f);
     }
 }

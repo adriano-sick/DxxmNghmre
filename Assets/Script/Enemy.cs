@@ -32,17 +32,11 @@ public class Enemy : MonoBehaviour
         meshNav = GetComponent<NavMeshAgent>();
         enemySound = GetComponent<AudioSource>();
         enemyAnim = GetComponent<buttonControl_script>();
-        
-        if (gameObject.name == "mummy@idle01")
-        {
-            enemyAnim.Idle();
-        }
+                
     }
 
     void Update()
     {
-        //enemyAnim.Idle(); NEED TO SOLVE ANIMATIONS PROBLEMS!!!
-        
 
         if (GameObject.Find("First Person Player") != null)
         {
@@ -55,7 +49,8 @@ public class Enemy : MonoBehaviour
                 {
 
                     meshNav.SetDestination(player.transform.position);
-                    enemyAnim.Run();
+                    
+                    enemyAnim.Invoke("Run", 0f);
 
                     float random = Random.Range(0.0f, 1.0f);
                     if (random > (1.0f - attackProbability) && dist < attackDistance)
@@ -66,13 +61,23 @@ public class Enemy : MonoBehaviour
 
                 }
 
+                else if (!follow)
+                {                    
+                    if (gameObject.name == "mummy@idle01")
+                    {
+                        enemyAnim.Invoke("Idle", 0f);
+                    }
+
+                }
+
             }
+
         }
         
 
         else if(GameObject.Find("First Person Player") == null)
         {
-            enemyAnim.Dance();
+            enemyAnim.Invoke("Dance", 0f);
         }
         
     }
@@ -94,7 +99,7 @@ public class Enemy : MonoBehaviour
         
     public void TakeDamage (float amount)
     {
-        enemyAnim.TakeDamage();
+        enemyAnim.Invoke("TakeDamage", 0f);
         health -= amount;        
         if (health <= 0f)
         {
@@ -107,7 +112,7 @@ public class Enemy : MonoBehaviour
     {
         if(gameObject.name == "mummy@idle01")
         {
-            enemyAnim.Dance();
+            enemyAnim.Invoke("Dance", 0f);
         }
         
         Destroy(gameObject, 0.2f);
