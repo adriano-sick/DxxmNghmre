@@ -25,8 +25,7 @@ public class Enemy : MonoBehaviour
     private AudioSource enemySound;
     public GameObject fire;
     public Vector3 fireOffset = new Vector3(0, 3, 0);
-    private bool isShooting = false;
-
+    
 
     void Start()
     {
@@ -45,30 +44,31 @@ public class Enemy : MonoBehaviour
         //enemyAnim.Idle(); NEED TO SOLVE ANIMATIONS PROBLEMS!!!
         
 
-            if (GameObject.Find("First Person Player") != null)
+        if (GameObject.Find("First Person Player") != null)
         {
             if (meshNav.enabled)
             {
                 float dist = Vector3.Distance(player.transform.position, this.transform.position);
                 bool follow = (dist < followDistance);
-                
+
                 if (follow)
                 {
-                    
+
                     meshNav.SetDestination(player.transform.position);
-                    enemyAnim.Run();                    
-                        
+                    enemyAnim.Run();
+
                     float random = Random.Range(0.0f, 1.0f);
                     if (random > (1.0f - attackProbability) && dist < attackDistance)
                     {
-                        ShootEvent();                      
+                        ShootEvent();
 
                     }
 
                 }
-                              
+
             }
         }
+        
 
         else if(GameObject.Find("First Person Player") == null)
         {
@@ -84,9 +84,6 @@ public class Enemy : MonoBehaviour
            GameObject temp = Instantiate(fire, gameObject.transform.position + fireOffset, transform.rotation) as GameObject;
            temp.transform.SetParent(transform);
         }
-         
-        
-        
 
         if (enemySound != null && !enemySound.isPlaying)
         {
