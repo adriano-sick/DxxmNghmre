@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
     public GameObject fire;
     public Vector3 fireOffset = new Vector3(0, 3, 0);
     
+    //NEXT STEP: SOLVE ANIMATION TROUBLES!!!!
 
     void Start()
     {
@@ -49,8 +50,10 @@ public class Enemy : MonoBehaviour
                 {
 
                     meshNav.SetDestination(player.transform.position);
-                    
-                    enemyAnim.Invoke("Run", 0f);
+                    if (gameObject.tag == "Enemy")
+                    {
+                        enemyAnim.Invoke("Run", 0f);
+                    }
 
                     float random = Random.Range(0.0f, 1.0f);
                     if (random > (1.0f - attackProbability) && dist < attackDistance)
@@ -63,7 +66,7 @@ public class Enemy : MonoBehaviour
 
                 else if (!follow)
                 {                    
-                    if (gameObject.name == "mummy@idle01")
+                    if (gameObject.tag == "Enemy")
                     {
                         enemyAnim.Invoke("Idle", 0f);
                     }
@@ -77,7 +80,10 @@ public class Enemy : MonoBehaviour
 
         else if(GameObject.Find("First Person Player") == null)
         {
-            enemyAnim.Invoke("Dance", 0f);
+            if (gameObject.tag == "Enemy")
+            {
+                enemyAnim.Invoke("Dance", 0f);
+            }
         }
         
     }
@@ -99,7 +105,11 @@ public class Enemy : MonoBehaviour
         
     public void TakeDamage (float amount)
     {
-        enemyAnim.Invoke("TakeDamage", 0f);
+        if (gameObject.tag == "Enemy")
+        {
+            enemyAnim.Invoke("TakeDamage", 0f);
+        }
+
         health -= amount;        
         if (health <= 0f)
         {
@@ -110,7 +120,7 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        if(gameObject.name == "mummy@idle01")
+        if(gameObject.tag == "Enemy")
         {
             enemyAnim.Invoke("Dance", 0f);
         }
