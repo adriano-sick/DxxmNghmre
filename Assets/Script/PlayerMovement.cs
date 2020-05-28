@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed = 12f;
     public float gravity = -9.81f;
     public float jumpHeight = 1.5f;
+    public float mummyDamage = 10.0f;
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -63,9 +64,9 @@ public class PlayerMovement : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
 
-        if (other.gameObject.name == "Collider")
+        if (other.gameObject.name == "FlameThrowerCollider")
         {
-            TakeDamage(10f);
+            TakeDamage(mummyDamage);
         }
             
     }

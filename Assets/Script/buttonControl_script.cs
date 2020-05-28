@@ -37,11 +37,13 @@ public class buttonControl_script : MonoBehaviour
 
 	public void Dance()
 	{
-		anim.SetBool ("dancing", !(anim.GetBool("dancing")));
+		anim.SetBool ("dancing", true);
 	}
 
 	public void TakeDamage()
 	{		
 		anim.SetBool("takeDamage", true);
+		anim.SetBool("isRun", false);
+		anim.SetBool("isIdle", false);
 	}
 }

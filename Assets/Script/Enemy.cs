@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     public float limitDistance = 2.0f;
     public float attackDistance = 6.0f;
     [Range(0.0f, 1.0f)]
-    public float attackProbability = 50f;
+    public float attackProbability = 100f;
     [Range(0.0f, 1.0f)]
     public float hitAccuracy = 0.5f;
     public float damagePoints = 2.0f;
@@ -25,19 +25,38 @@ public class Enemy : MonoBehaviour
     private AudioSource enemySound;
     public GameObject fire;
     public Vector3 fireOffset = new Vector3(0, 3, 0);
-    
-    //NEXT STEP: SOLVE ANIMATION TROUBLES!!!!
+    private Animator anim;
 
     void Start()
     {
         meshNav = GetComponent<NavMeshAgent>();
         enemySound = GetComponent<AudioSource>();
-        enemyAnim = GetComponent<buttonControl_script>();
+        anim = GetComponentInChildren<Animator>();
+
+        anim.SetBool("isIdle", true);
                 
     }
 
     void Update()
     {
+        if (meshNav.velocity == new Vector3(0, 0, 0))
+        {
+            anim.SetBool("isIdle", true);
+            anim.SetBool("isRun", false);
+            
+        }
+
+        else if (meshNav.velocity != new Vector3(0, 0, 0))
+        {
+            anim.SetBool("isRun", true);
+            anim.SetBool("isIdle", false);
+        }
+
+        if (this.anim.GetCurrentAnimatorStateInfo(0).IsName("takeDamage"))
+        {
+            anim.SetBool("takeDamage", false);
+        }
+
 
         if (GameObject.Find("First Person Player") != null)
         {
@@ -50,40 +69,22 @@ public class Enemy : MonoBehaviour
                 {
 
                     meshNav.SetDestination(player.transform.position);
-                    if (gameObject.tag == "Enemy")
-                    {
-                        enemyAnim.Invoke("Run", 0f);
-                    }
-
                     float random = Random.Range(0.0f, 1.0f);
                     if (random > (1.0f - attackProbability) && dist < attackDistance)
                     {
                         ShootEvent();
 
-                    }
+                    }                                       
 
                 }
-
-                else if (!follow)
-                {                    
-                    if (gameObject.tag == "Enemy")
-                    {
-                        enemyAnim.Invoke("Idle", 0f);
-                    }
-
-                }
-
+                
             }
 
-        }
-        
+        }        
 
         else if(GameObject.Find("First Person Player") == null)
         {
-            if (gameObject.tag == "Enemy")
-            {
-                enemyAnim.Invoke("Dance", 0f);
-            }
+            
         }
         
     }
@@ -104,27 +105,20 @@ public class Enemy : MonoBehaviour
     }
         
     public void TakeDamage (float amount)
-    {
-        if (gameObject.tag == "Enemy")
-        {
-            enemyAnim.Invoke("TakeDamage", 0f);
-        }
-
+    {        
         health -= amount;        
         if (health <= 0f)
         {
             Die();
         }
 
+        anim.SetBool("takeDamage", true);
+
     }
 
     void Die()
     {
-        if(gameObject.tag == "Enemy")
-        {
-            enemyAnim.Invoke("Dance", 0f);
-        }
-        
+                
         Destroy(gameObject, 0.2f);
     }
 }
