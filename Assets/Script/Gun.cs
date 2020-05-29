@@ -14,13 +14,19 @@ public class Gun : MonoBehaviour
     public float gunFlashTime = 0.15f;
     public GameObject impactEffect;
     public float impactForce = 300f;
+    public int ammo = 0;
+    public int maxAmmo;
+    public int pisMag = 1;
 
     public float fireRate = 15f;
     private float nextTimeToFire = 0f;
 
     public AudioClip gunShoot;
+    public AudioClip noAmmo;
+    public AudioClip reload;
     private AudioSource gunSound;
     public float SFXVol = 1f;
+    public float volFix = 5f;
 
    void Start()
    {
@@ -30,16 +36,34 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Fire1") && Time.time >= nextTimeToFire && gameObject.tag == "Automatic")
+        if (Time.time >= nextTimeToFire && ammo > 0)
         {
-            nextTimeToFire = Time.time + 1f / fireRate;
-            Shoot();
+            if (Input.GetButton("Fire1") && gameObject.tag == "Automatic")
+            {
+                nextTimeToFire = Time.time + 1f / fireRate;
+                ammo -= 1;
+                Shoot();
+            }
+
+            if (Input.GetButtonDown("Fire1") && gameObject.tag == "SemiAuto")
+            {
+                nextTimeToFire = Time.time + 1f / fireRate;
+                ammo -= 1;
+                Shoot();
+            }
+
         }
 
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && gameObject.tag == "SemiAuto")
+        if (ammo == 0 && Input.GetButtonDown("Fire1"))
         {
-            nextTimeToFire = Time.time + 1f / fireRate;
-            Shoot();
+            gunSound.PlayOneShot(noAmmo, SFXVol * volFix);
+        }
+            
+        if (Input.GetKeyDown(KeyCode.R) && pisMag > 0 && maxAmmo > ammo)
+        {
+            ammo += (maxAmmo - ammo);
+            pisMag -= 1;
+            gunSound.PlayOneShot(reload, SFXVol * volFix);
         }
 
     }

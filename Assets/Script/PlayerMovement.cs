@@ -68,6 +68,13 @@ public class PlayerMovement : MonoBehaviour
         {
             TakeDamage(mummyDamage);
         }
+
+        if (other.gameObject.tag == "pistolMagazine")
+        {
+            Gun gun = GetComponentInChildren<Gun>();
+            gun.pisMag += 1;
+            Destroy(other.gameObject);
+        }
             
     }
 
