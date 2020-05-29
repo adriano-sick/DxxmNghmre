@@ -23,9 +23,13 @@ public class PlayerMovement : MonoBehaviour
     public bool isAlive = true;
     public GameObject deathCam;
 
+    public AudioClip gotMagSound;
+    private AudioSource playerSound;
+
     private void Start()
     {
         deathCam.SetActive(false);
+        playerSound = GetComponent<AudioSource>();
     }
 
 
@@ -73,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Gun gun = GetComponentInChildren<Gun>();
             gun.pisMag += 1;
+            playerSound.PlayOneShot(gotMagSound);
             Destroy(other.gameObject);
         }
             
