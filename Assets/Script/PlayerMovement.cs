@@ -26,6 +26,9 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip gotMagSound;
     private AudioSource playerSound;
 
+    public int pistolMag;
+    public int carbineMag;
+
     private void Start()
     {
         deathCam.SetActive(false);
@@ -67,20 +70,27 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        
 
         if (other.gameObject.name == "FlameThrowerCollider")
         {
             TakeDamage(mummyDamage);
         }
 
-        if (other.gameObject.tag == "pistolMagazine")
+        if (other.gameObject.tag == "PistolMagazine")
         {
-            Gun gun = GetComponentInChildren<Gun>();
-            gun.pisMag += 1;
+            pistolMag += 1;
             playerSound.PlayOneShot(gotMagSound);
             Destroy(other.gameObject);
         }
-            
+
+        if (other.gameObject.tag == "CarbineMagazine")
+        {
+            carbineMag += 1;
+            playerSound.PlayOneShot(gotMagSound);
+            Destroy(other.gameObject);
+        }
+
     }
 
     public void TakeDamage(float amount)

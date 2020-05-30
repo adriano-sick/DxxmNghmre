@@ -8,8 +8,6 @@ public class Enemy : MonoBehaviour
 {
 
     public float health = 50f;
-    private buttonControl_script enemyAnim;
-
     private NavMeshAgent meshNav;
     public GameObject player;
     public float followDistance = 20.0f;

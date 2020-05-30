@@ -16,7 +16,10 @@ public class Gun : MonoBehaviour
     public float impactForce = 300f;
     public int ammo = 0;
     public int maxAmmo;
-    public int pisMag = 1;
+    //public int pistolMag;
+    //public int carbineMag;
+
+    //SOLVE MULTIPLE VALUES FOR MAGS IN DIFFERENT INSTANCES - MAYBE CREATE A GameManager SCRIPT?
 
     public float fireRate = 15f;
     private float nextTimeToFire = 0f;
@@ -27,15 +30,17 @@ public class Gun : MonoBehaviour
     private AudioSource gunSound;
     public float SFXVol = 1f;
     public float volFix = 5f;
+    public GameManager gameManager;
 
    void Start()
    {
-        gunSound = GetComponent<AudioSource>();
-                        
+        gunSound = GetComponent<AudioSource>();                        
    }
     // Update is called once per frame
     void Update()
     {
+
+
         if (Time.time >= nextTimeToFire && ammo > 0)
         {
             if (Input.GetButton("Fire1") && gameObject.tag == "Automatic")
@@ -59,11 +64,25 @@ public class Gun : MonoBehaviour
             gunSound.PlayOneShot(noAmmo, SFXVol * volFix);
         }
             
-        if (Input.GetKeyDown(KeyCode.R) && pisMag > 0 && maxAmmo > ammo)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            ammo += (maxAmmo - ammo);
-            pisMag -= 1;
-            gunSound.PlayOneShot(reload, SFXVol * volFix);
+            PlayerMovement playerMovement = GetComponentInParent<PlayerMovement>();
+
+            if (gameObject.tag == "SemiAuto" && playerMovement.pistolMag > 0 && maxAmmo > ammo)
+            {
+                ammo += (maxAmmo - ammo);
+                playerMovement.pistolMag -= 1;
+                gunSound.PlayOneShot(reload, SFXVol * volFix);
+            }
+
+            if (gameObject.tag == "Automatic" && playerMovement.carbineMag > 0 && maxAmmo > ammo)
+            {
+                ammo += (maxAmmo - ammo);
+                playerMovement.carbineMag -= 1;
+                gunSound.PlayOneShot(reload, SFXVol * volFix);
+            }
+
+
         }
 
     }
