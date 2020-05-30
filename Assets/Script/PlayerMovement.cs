@@ -28,8 +28,8 @@ public class PlayerMovement : MonoBehaviour
 
     public int pistolMag;
     public int carbineMag;
-    public bool haveCarbine = true;
-    public bool havePistol = true;
+    public bool haveCarbine = false;
+    public bool havePistol = false;
 
     public GameObject Pistol;
     public GameObject M4_Carbine;
@@ -105,6 +105,48 @@ public class PlayerMovement : MonoBehaviour
             carbineMag += 1;
             playerSound.PlayOneShot(gotMagSound);
             Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.name == "OnGroundPistol")
+        {
+            if (havePistol == false)
+            {
+                havePistol = true;
+                Pistol.SetActive(true);
+                M4_Carbine.SetActive(false);
+                playerSound.PlayOneShot(gotMagSound);
+                Destroy(other.gameObject);
+            }
+
+            else if (havePistol == true)
+            {
+                pistolMag += 1;
+                playerSound.PlayOneShot(gotMagSound);
+                Destroy(other.gameObject);
+            }
+            
+
+        }
+
+        if (other.gameObject.name == "OnGroundCarbine")
+        {
+            if (haveCarbine == false)
+            {
+                haveCarbine = true;
+                M4_Carbine.SetActive(true);
+                Pistol.SetActive(false);
+                playerSound.PlayOneShot(gotMagSound);
+                Destroy(other.gameObject);
+            }
+
+            else if (haveCarbine == true)
+            {
+                carbineMag += 1;
+                playerSound.PlayOneShot(gotMagSound);
+                Destroy(other.gameObject);
+            }
+
+
         }
 
     }
