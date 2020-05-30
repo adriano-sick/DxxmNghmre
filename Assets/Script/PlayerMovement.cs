@@ -28,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
 
     public int pistolMag;
     public int carbineMag;
+    public bool haveCarbine = true;
+    public bool havePistol = true;
+
+    public GameObject Pistol;
+    public GameObject M4_Carbine;
 
     private void Start()
     {
@@ -63,8 +68,19 @@ public class PlayerMovement : MonoBehaviour
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime);
-        }   
+        }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1) && haveCarbine)
+        {
+            M4_Carbine.SetActive(true);
+            Pistol.SetActive(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2) && havePistol)
+        {
+            Pistol.SetActive(true);
+            M4_Carbine.SetActive(false);
+        }
 
     }
 
