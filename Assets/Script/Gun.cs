@@ -16,8 +16,7 @@ public class Gun : MonoBehaviour
     public float impactForce = 300f;
     public int ammo = 0;
     public int maxAmmo;
-    //public int pistolMag;
-    //public int carbineMag;
+    public float reloadCooldown = 3f;
 
     //SOLVE MULTIPLE VALUES FOR MAGS IN DIFFERENT INSTANCES - MAYBE CREATE A GameManager SCRIPT?
 
@@ -66,26 +65,8 @@ public class Gun : MonoBehaviour
             
         if (Input.GetKeyDown(KeyCode.R))
         {
-            PlayerMovement playerMovement = GetComponentInParent<PlayerMovement>();
-
-            if (gameObject.tag == "SemiAuto" && playerMovement.pistolMag > 0 && maxAmmo > ammo)
-            {
-                ammo += (maxAmmo - ammo);
-                playerMovement.pistolMag -= 1;
-                gunSound.PlayOneShot(reload, SFXVol * volFix);
-            }
-
-            if (gameObject.tag == "Automatic" && playerMovement.carbineMag > 0 && maxAmmo > ammo)
-            {
-                ammo += (maxAmmo - ammo);
-                playerMovement.carbineMag -= 1;
-                gunSound.PlayOneShot(reload, SFXVol * volFix);
-            }
-
-
+            StartCoroutine(Reload());
         }
-
-    }
 
     void Shoot()
     {
@@ -116,6 +97,34 @@ public class Gun : MonoBehaviour
 
             GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impactGO, 2f);
+        }
+
+    }
+
+    IEnumerator Reload()
+    {
+            PlayerMovement playerMovement = GetComponentInParent<PlayerMovement>();
+
+            if (gameObject.tag == "SemiAuto" && playerMovement.pistolMag > 0 && maxAmmo > ammo)
+            {
+                gunSound.PlayOneShot(reload, SFXVol * volFix);
+                ammo = 0;
+                yield return new WaitForSeconds(reloadCooldown);
+                ammo += (maxAmmo - ammo);
+                playerMovement.pistolMag -= 1;
+                
+            }
+
+            if (gameObject.tag == "Automatic" && playerMovement.carbineMag > 0 && maxAmmo > ammo)
+            {
+                gunSound.PlayOneShot(reload, SFXVol * volFix);
+                ammo = 0;
+                yield return new WaitForSeconds(reloadCooldown);
+                ammo += (maxAmmo - ammo);
+                playerMovement.carbineMag -= 1;
+            }
+
+
         }
 
     }
