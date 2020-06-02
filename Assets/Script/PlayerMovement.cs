@@ -28,16 +28,23 @@ public class PlayerMovement : MonoBehaviour
 
     public int pistolMag;
     public int carbineMag;
+    public int rifleMag;
+
     public bool haveCarbine = false;
     public bool havePistol = false;
+    public bool haveRifle = false;
 
     public GameObject Pistol;
     public GameObject M4_Carbine;
+    public GameObject L96_Rifle;
+
+    public GameObject crosshair;
 
     private void Start()
     {
         deathCam.SetActive(false);
         playerSound = GetComponent<AudioSource>();
+        crosshair.SetActive(false);
     }
 
 
@@ -74,12 +81,24 @@ public class PlayerMovement : MonoBehaviour
         {
             M4_Carbine.SetActive(true);
             Pistol.SetActive(false);
+            L96_Rifle.SetActive(false);
+            crosshair.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && havePistol)
         {
             Pistol.SetActive(true);
             M4_Carbine.SetActive(false);
+            L96_Rifle.SetActive(false);
+            crosshair.SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4) && haveRifle)
+        {
+            L96_Rifle.SetActive(true);
+            Pistol.SetActive(false);
+            M4_Carbine.SetActive(false);
+            crosshair.SetActive(false);
         }
 
     }
@@ -107,13 +126,22 @@ public class PlayerMovement : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-        if (other.gameObject.name == "OnGroundPistol")
+        if (other.gameObject.tag == "RifleMagazine")
+        {
+            rifleMag += 1;
+            playerSound.PlayOneShot(gotMagSound);
+            Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.tag == "OnGroundPistol")
         {
             if (havePistol == false)
             {
                 havePistol = true;
                 Pistol.SetActive(true);
                 M4_Carbine.SetActive(false);
+                L96_Rifle.SetActive(false);
+                crosshair.SetActive(true);
                 playerSound.PlayOneShot(gotMagSound);
                 Destroy(other.gameObject);
             }
@@ -128,13 +156,15 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        if (other.gameObject.name == "OnGroundCarbine")
+        if (other.gameObject.tag == "OnGroundCarbine")
         {
             if (haveCarbine == false)
             {
                 haveCarbine = true;
                 M4_Carbine.SetActive(true);
                 Pistol.SetActive(false);
+                L96_Rifle.SetActive(false);
+                crosshair.SetActive(true);
                 playerSound.PlayOneShot(gotMagSound);
                 Destroy(other.gameObject);
             }
@@ -142,6 +172,28 @@ public class PlayerMovement : MonoBehaviour
             else if (haveCarbine == true)
             {
                 carbineMag += 1;
+                playerSound.PlayOneShot(gotMagSound);
+                Destroy(other.gameObject);
+            }
+
+        }
+
+        if (other.gameObject.tag == "OnGroundRifle")
+        {
+            if (haveRifle == false)
+            {
+                haveRifle = true;
+                L96_Rifle.SetActive(true);
+                M4_Carbine.SetActive(false);
+                Pistol.SetActive(false);
+                crosshair.SetActive(false);
+                playerSound.PlayOneShot(gotMagSound);
+                Destroy(other.gameObject);
+            }
+
+            else if (haveRifle == true)
+            {
+                rifleMag += 1;
                 playerSound.PlayOneShot(gotMagSound);
                 Destroy(other.gameObject);
             }
