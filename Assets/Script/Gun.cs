@@ -202,7 +202,7 @@ public class Gun : MonoBehaviour
         gunFlashLight.SetActive(false);
     }
 
-    void Scop()
+    public void Scop()
     {
         if (gameObject.name == "L96_Rifle")
         {
