@@ -45,6 +45,11 @@ public class Gun : MonoBehaviour
         mouseLook = GetComponentInParent<MouseLook>();
         
    }
+
+  void OnEnable()
+  {
+        isReloading = false;
+  }
     // Update is called once per frame
     void Update()
     {

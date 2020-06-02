@@ -40,11 +40,11 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject crosshair;
 
-    private Gun gun;
+    private Gun gunL96_Rifle;
 
     private void Start()
     {
-        gun = L96_Rifle.GetComponent<Gun>();
+        gunL96_Rifle = L96_Rifle.GetComponent<Gun>();
         deathCam.SetActive(false);
         playerSound = GetComponent<AudioSource>();
         crosshair.SetActive(false);
@@ -89,9 +89,9 @@ public class PlayerMovement : MonoBehaviour
             L96_Rifle.SetActive(false);
             crosshair.SetActive(true);
 
-            if (gun.aimed)
+            if (gunL96_Rifle.aimed)
             {
-                gun.Scop();
+                gunL96_Rifle.Scop();
             }
             
         }
@@ -101,11 +101,11 @@ public class PlayerMovement : MonoBehaviour
             Pistol.SetActive(true);
             M4_Carbine.SetActive(false);
             L96_Rifle.SetActive(false);
-            crosshair.SetActive(true);
+            crosshair.SetActive(true);            
 
-            if (gun.aimed)
+            if (gunL96_Rifle.aimed)
             {
-                gun.Scop();
+                gunL96_Rifle.Scop();
             }
         }
 
@@ -116,9 +116,9 @@ public class PlayerMovement : MonoBehaviour
             M4_Carbine.SetActive(false);
             crosshair.SetActive(false);
 
-            if (gun.aimed)
+            if (gunL96_Rifle.aimed)
             {
-                gun.Scop();
+                gunL96_Rifle.Scop();
             }
 
         }
