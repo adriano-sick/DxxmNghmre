@@ -8,6 +8,7 @@ public class Gun : MonoBehaviour
     public float range = 100f;
 
     public Camera fpsCam;
+    public GameObject weaponCamera;
 
     public ParticleSystem muzzleFlash;
     public GameObject gunFlashLight;
@@ -31,19 +32,25 @@ public class Gun : MonoBehaviour
     public bool isReloading = false;
 
     public Camera mainCamera;
-    private float defaultFOV;
-    public float scoppedFOV = 15.0f;
+    private float defaultFOV;       
     public GameObject scop;
-    public bool aimed = false;
-    public float scoppedMS = 10;
+    public bool aimed = false;    
     private float defaultMS;
     private MouseLook mouseLook;
+    private float defaultSpeed;
+    public float scoppedSpeed = 4.5f;
+    public float scoppedMS = 10;
+    public float scoppedFOV = 30.0f;
+    public float maxFOV = 5.0f;
+    public float minFOV = 30.0f;
+    private PlayerMovement playerMovement;
+
 
    void Start()
    {
         gunSound = GetComponent<AudioSource>();
         mouseLook = GetComponentInParent<MouseLook>();
-        
+        playerMovement = GetComponentInParent<PlayerMovement>();
    }
 
   void OnEnable()
@@ -53,7 +60,18 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (aimed)
+        {
+            if (Input.mouseScrollDelta.y > 0 && mainCamera.fieldOfView >= maxFOV)
+            {
+                mainCamera.fieldOfView -= 1;
+            }
 
+            if (Input.mouseScrollDelta.y < 0 && mainCamera.fieldOfView <= minFOV)
+            {
+                mainCamera.fieldOfView += 1;
+            }
+        }
 
         if (Time.time >= nextTimeToFire && ammo > 0 && !isReloading)
         {
@@ -158,7 +176,9 @@ public class Gun : MonoBehaviour
             isReloading = true;
             gunSound.PlayOneShot(reload, SFXVol * volFix);
             ammo = 0;
+            playerMovement.crosshair.SetActive(false);
             yield return new WaitForSeconds(reloadCooldown);
+            playerMovement.crosshair.SetActive(true);
             ammo += (maxAmmo - ammo);
             playerMovement.pistolMag -= 1;
             isReloading = false;
@@ -175,7 +195,9 @@ public class Gun : MonoBehaviour
             isReloading = true;
             gunSound.PlayOneShot(reload, SFXVol * volFix);
             ammo = 0;
+            playerMovement.crosshair.SetActive(false);
             yield return new WaitForSeconds(reloadCooldown);
+            playerMovement.crosshair.SetActive(true);
             ammo += (maxAmmo - ammo);
             playerMovement.carbineMag -= 1;
             isReloading = false;
@@ -209,6 +231,8 @@ public class Gun : MonoBehaviour
 
     public void Scop()
     {
+        PlayerMovement playerMovement = GetComponentInParent<PlayerMovement>();
+
         if (gameObject.name == "L96_Rifle")
         {
             if (!aimed)
@@ -219,6 +243,9 @@ public class Gun : MonoBehaviour
                 mainCamera.fieldOfView = scoppedFOV;
                 defaultMS = mouseLook.mouseSensitivity;
                 mouseLook.mouseSensitivity = scoppedMS;
+                weaponCamera.SetActive(false);
+                defaultSpeed = playerMovement.speed;
+                playerMovement.speed = scoppedSpeed;
             }
 
             else if (aimed)
@@ -227,6 +254,8 @@ public class Gun : MonoBehaviour
                 aimed = false;
                 mainCamera.fieldOfView = defaultFOV;
                 mouseLook.mouseSensitivity = defaultMS;
+                weaponCamera.SetActive(true);
+                playerMovement.speed = defaultSpeed;
             }
         }
 

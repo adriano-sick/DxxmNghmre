@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // next steps: solve clipping, add shotgun, create the gund animations!!!
+    // next steps: add shotgun, create the gun animations!!!
     // Start is called before the first frame update
     void Start()
     {
