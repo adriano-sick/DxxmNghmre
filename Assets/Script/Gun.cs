@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class Gun : MonoBehaviour
@@ -44,6 +45,9 @@ public class Gun : MonoBehaviour
     public float maxFOV = 5.0f;
     public float minFOV = 30.0f;
     private PlayerMovement playerMovement;
+    public float shootPrecision;
+
+    public GameObject crosshair;
 
 
    void Start()
@@ -75,6 +79,7 @@ public class Gun : MonoBehaviour
 
         if (Time.time >= nextTimeToFire && ammo > 0 && !isReloading)
         {
+
             if (Input.GetButton("Fire1") && gameObject.tag == "Automatic")
             {
                 nextTimeToFire = Time.time + 1f / fireRate;
@@ -97,7 +102,18 @@ public class Gun : MonoBehaviour
                 
             }
 
-            
+            if (Input.GetButtonDown("Fire1") && gameObject.tag == "Repetition")
+            {
+                nextTimeToFire = Time.time + 1f / fireRate;
+                ammo -= 1;
+                StartCoroutine(Shoot());
+                StartCoroutine(Shoot());
+                StartCoroutine(Shoot());
+                StartCoroutine(Shoot());
+
+            }
+
+
         }
 
         if (Input.GetButtonDown("Fire1") && ammo == 0 && !isReloading)
@@ -124,18 +140,31 @@ public class Gun : MonoBehaviour
 
     IEnumerator Shoot()
     {
+        StartCoroutine(Flashlight());
+
+        if (gameObject.name == "870_Shotgun" && !gunSound.isPlaying)
+        {
+            gunSound.PlayOneShot(gunShoot, SFXVol);
+        }
+
+        else if (gameObject.name == "Pistol" || gameObject.name == "M4_Carbine" || gameObject.name == "L96_Rifle")
+        {
+            gunSound.PlayOneShot(gunShoot, SFXVol);
+        }        
+
         if (!muzzleFlash.isPlaying)
         {
             muzzleFlash.Play();
         }
 
-        StartCoroutine(Flashlight());
-        gunSound.PlayOneShot(gunShoot, SFXVol);
+        float offsetY = Random.Range(-shootPrecision, shootPrecision);
+        float offsetX = Random.Range(-shootPrecision, shootPrecision);
+        Vector3 direction = fpsCam.transform.forward + new Vector3(offsetX, offsetY, offsetX);
 
         RaycastHit hit;
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        if (Physics.Raycast(fpsCam.transform.position, direction, out hit, range))
         {
-            Debug.Log(hit.transform.name);
+            Debug.Log(hit.transform.name + fpsCam.transform.forward + direction);
 
             Enemy enemy = hit.transform.GetComponent<Enemy>();
             if (enemy != null)
@@ -160,6 +189,7 @@ public class Gun : MonoBehaviour
 
         }
 
+
     }
 
     IEnumerator Reload()
@@ -176,9 +206,9 @@ public class Gun : MonoBehaviour
             isReloading = true;
             gunSound.PlayOneShot(reload, SFXVol * volFix);
             ammo = 0;
-            playerMovement.crosshair.SetActive(false);
+            crosshair.SetActive(false);
             yield return new WaitForSeconds(reloadCooldown);
-            playerMovement.crosshair.SetActive(true);
+            crosshair.SetActive(true);
             ammo += (maxAmmo - ammo);
             playerMovement.pistolMag -= 1;
             isReloading = false;
@@ -195,9 +225,9 @@ public class Gun : MonoBehaviour
             isReloading = true;
             gunSound.PlayOneShot(reload, SFXVol * volFix);
             ammo = 0;
-            playerMovement.crosshair.SetActive(false);
+            crosshair.SetActive(false);
             yield return new WaitForSeconds(reloadCooldown);
-            playerMovement.crosshair.SetActive(true);
+            crosshair.SetActive(true);
             ammo += (maxAmmo - ammo);
             playerMovement.carbineMag -= 1;
             isReloading = false;
@@ -216,6 +246,24 @@ public class Gun : MonoBehaviour
             yield return new WaitForSeconds(reloadCooldown);
             ammo += (maxAmmo - ammo);
             playerMovement.rifleMag -= 1;
+            isReloading = false;
+        }
+
+        if (gameObject.tag == "Repetition" && playerMovement.shotgunMag > 0 && maxAmmo > ammo)
+        {
+            if (aimed)
+            {
+                Scop();
+            }
+
+            isReloading = true;
+            gunSound.PlayOneShot(reload, SFXVol * volFix);
+            ammo = 0;
+            crosshair.SetActive(false);
+            yield return new WaitForSeconds(reloadCooldown);
+            crosshair.SetActive(true);
+            ammo += (maxAmmo - ammo);
+            playerMovement.shotgunMag -= 1;
             isReloading = false;
         }
 

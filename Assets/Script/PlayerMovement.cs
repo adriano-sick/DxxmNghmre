@@ -29,25 +29,35 @@ public class PlayerMovement : MonoBehaviour
     public int pistolMag;
     public int carbineMag;
     public int rifleMag;
+    public int shotgunMag;
 
     public bool haveCarbine = false;
     public bool havePistol = false;
     public bool haveRifle = false;
+    public bool haveShotgun = false;
 
     public GameObject Pistol;
     public GameObject M4_Carbine;
     public GameObject L96_Rifle;
-
-    public GameObject crosshair;
+    public GameObject Shotgun;
 
     private Gun gunL96_Rifle;
+    private Gun gunPistol;
+    private Gun gunM4_Carbine;
+    private Gun gunShotgun;
 
     private void Start()
     {
         gunL96_Rifle = L96_Rifle.GetComponent<Gun>();
+        gunPistol = Pistol.GetComponent<Gun>();
+        gunM4_Carbine = M4_Carbine.GetComponent<Gun>();
+        gunShotgun = Shotgun.GetComponent<Gun>();
         deathCam.SetActive(false);
         playerSound = GetComponent<AudioSource>();
-        crosshair.SetActive(false);
+        gunL96_Rifle.crosshair.SetActive(false);
+        gunPistol.crosshair.SetActive(false);
+        gunM4_Carbine.crosshair.SetActive(false);
+        gunShotgun.crosshair.SetActive(false);
     }
 
 
@@ -84,10 +94,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1) && haveCarbine)
         {
+            GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
             M4_Carbine.SetActive(true);
             Pistol.SetActive(false);
             L96_Rifle.SetActive(false);
-            crosshair.SetActive(true);
+            Shotgun.SetActive(false);
+            gunM4_Carbine.crosshair.SetActive(true);
+            gunL96_Rifle.crosshair.SetActive(false);
+            gunPistol.crosshair.SetActive(false);
+            gunShotgun.crosshair.SetActive(false);
 
             if (gunL96_Rifle.aimed)
             {
@@ -98,10 +113,33 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && havePistol)
         {
+            GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
             Pistol.SetActive(true);
             M4_Carbine.SetActive(false);
             L96_Rifle.SetActive(false);
-            crosshair.SetActive(true);            
+            Shotgun.SetActive(false);
+            gunPistol.crosshair.SetActive(true);
+            gunL96_Rifle.crosshair.SetActive(false);
+            gunM4_Carbine.crosshair.SetActive(false);
+            gunShotgun.crosshair.SetActive(false);
+
+            if (gunL96_Rifle.aimed)
+            {
+                gunL96_Rifle.Scop();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3) && haveShotgun)
+        {
+            GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
+            Shotgun.SetActive(true);
+            Pistol.SetActive(false);
+            M4_Carbine.SetActive(false);
+            L96_Rifle.SetActive(false);
+            gunShotgun.crosshair.SetActive(true);
+            gunL96_Rifle.crosshair.SetActive(false);
+            gunM4_Carbine.crosshair.SetActive(false);
+            gunPistol.crosshair.SetActive(false);
 
             if (gunL96_Rifle.aimed)
             {
@@ -111,10 +149,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha4) && haveRifle)
         {
+            GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
             L96_Rifle.SetActive(true);
             Pistol.SetActive(false);
             M4_Carbine.SetActive(false);
-            crosshair.SetActive(false);
+            Shotgun.SetActive(false);
+            gunShotgun.crosshair.SetActive(false);
+            gunL96_Rifle.crosshair.SetActive(false);
+            gunM4_Carbine.crosshair.SetActive(false);
+            gunPistol.crosshair.SetActive(false);
+            
 
             if (gunL96_Rifle.aimed)
             {
@@ -155,6 +199,13 @@ public class PlayerMovement : MonoBehaviour
             Destroy(other.gameObject);
         }
 
+        if (other.gameObject.tag == "ShotgunMagazine")
+        {
+            shotgunMag += 1;
+            playerSound.PlayOneShot(gotMagSound);
+            Destroy(other.gameObject);
+        }
+
         if (other.gameObject.tag == "OnGroundPistol")
         {
             if (havePistol == false)
@@ -163,7 +214,11 @@ public class PlayerMovement : MonoBehaviour
                 Pistol.SetActive(true);
                 M4_Carbine.SetActive(false);
                 L96_Rifle.SetActive(false);
-                crosshair.SetActive(true);
+                Shotgun.SetActive(false);
+                gunPistol.crosshair.SetActive(true);
+                gunM4_Carbine.crosshair.SetActive(false);
+                gunL96_Rifle.crosshair.SetActive(false);
+                gunShotgun.crosshair.SetActive(false);
                 playerSound.PlayOneShot(gotMagSound);
                 Destroy(other.gameObject);
             }
@@ -186,7 +241,11 @@ public class PlayerMovement : MonoBehaviour
                 M4_Carbine.SetActive(true);
                 Pistol.SetActive(false);
                 L96_Rifle.SetActive(false);
-                crosshair.SetActive(true);
+                Shotgun.SetActive(false);
+                gunM4_Carbine.crosshair.SetActive(true);
+                gunL96_Rifle.crosshair.SetActive(false);
+                gunPistol.crosshair.SetActive(false);
+                gunShotgun.crosshair.SetActive(false);
                 playerSound.PlayOneShot(gotMagSound);
                 Destroy(other.gameObject);
             }
@@ -208,7 +267,11 @@ public class PlayerMovement : MonoBehaviour
                 L96_Rifle.SetActive(true);
                 M4_Carbine.SetActive(false);
                 Pistol.SetActive(false);
-                crosshair.SetActive(false);
+                Shotgun.SetActive(false);
+                gunL96_Rifle.crosshair.SetActive(false);
+                gunM4_Carbine.crosshair.SetActive(false);
+                gunPistol.crosshair.SetActive(false);
+                gunShotgun.crosshair.SetActive(false);
                 playerSound.PlayOneShot(gotMagSound);
                 Destroy(other.gameObject);
             }
@@ -220,6 +283,32 @@ public class PlayerMovement : MonoBehaviour
                 Destroy(other.gameObject);
             }
 
+
+        }
+
+        if (other.gameObject.tag == "OnGroundShotgun")
+        {
+            if (haveShotgun == false)
+            {
+                haveShotgun = true;
+                Shotgun.SetActive(true);
+                M4_Carbine.SetActive(false);
+                Pistol.SetActive(false);
+                L96_Rifle.SetActive(false);
+                gunShotgun.crosshair.SetActive(true);
+                gunM4_Carbine.crosshair.SetActive(false);
+                gunL96_Rifle.crosshair.SetActive(false);
+                gunPistol.crosshair.SetActive(false);
+                playerSound.PlayOneShot(gotMagSound);
+                Destroy(other.gameObject);
+            }
+
+            else if (haveShotgun == true)
+            {
+                shotgunMag += 1;
+                playerSound.PlayOneShot(gotMagSound);
+                Destroy(other.gameObject);
+            }
 
         }
 

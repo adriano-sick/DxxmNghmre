@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // next steps: add shotgun, create the gun animations!!!
+    // next steps: crosshair for each gun move to gun, create the gun animations!!!
     // Start is called before the first frame update
     void Start()
     {
