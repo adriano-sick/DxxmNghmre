@@ -142,7 +142,7 @@ public class Gun : MonoBehaviour
     {
         StartCoroutine(Flashlight());
 
-        if (gameObject.name == "M4_Carbine")
+        if (gameObject.name == "M4_Carbine" || gameObject.name == "Pistol")
         {
             anim.SetTrigger("Shot");
         }
@@ -211,7 +211,8 @@ public class Gun : MonoBehaviour
             isReloading = true;
             gunSound.PlayOneShot(reload, SFXVol * volFix);            
             ammo = 0;
-            crosshair.SetActive(false);            
+            crosshair.SetActive(false);
+            anim.SetTrigger("Reload");
             yield return new WaitForSeconds(reloadCooldown);
             crosshair.SetActive(true);
             ammo += (maxAmmo - ammo);
@@ -315,7 +316,7 @@ public class Gun : MonoBehaviour
             }
         }
 
-        if (gameObject.name == "M4_Carbine")
+        if (gameObject.name == "M4_Carbine" || gameObject.name == "Pistol")
         {
             
 
