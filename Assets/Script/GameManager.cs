@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // next steps: finish gun animations!!!
+    // next steps: finish gun animations!!! change guns precision when it scoped
     // Start is called before the first frame update
     void Start()
     {
