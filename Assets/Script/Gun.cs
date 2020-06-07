@@ -46,9 +46,11 @@ public class Gun : MonoBehaviour
     public float minFOV = 30.0f;
     private PlayerMovement playerMovement;
     public float shootPrecision;
+    private float defaultshootPrecision;
     public GameObject crosshair;
     private Animator anim;
     public float aimTime;
+    private float precisionIncrease = 0.25f;
 
 
    void Start()
@@ -62,7 +64,20 @@ public class Gun : MonoBehaviour
   void OnEnable()
   {
         isReloading = false;
+        
   }
+
+    /*private void OnDisable()
+    {
+        
+        if (aimed)
+        {
+            StartCoroutine(Scop());
+            Debug.Log("aim disable");
+        }
+    }*/
+
+
     // Update is called once per frame
     void Update()
     {
@@ -300,6 +315,8 @@ public class Gun : MonoBehaviour
                 defaultMS = mouseLook.mouseSensitivity;
                 mouseLook.mouseSensitivity = scoppedMS;
                 weaponCamera.SetActive(false);
+                defaultshootPrecision = shootPrecision;
+                shootPrecision *= precisionIncrease;
                 defaultSpeed = playerMovement.speed;
                 playerMovement.speed = scoppedSpeed;
             }
@@ -312,6 +329,7 @@ public class Gun : MonoBehaviour
                 mainCamera.fieldOfView = defaultFOV;
                 mouseLook.mouseSensitivity = defaultMS;
                 weaponCamera.SetActive(true);
+                shootPrecision = defaultshootPrecision;
                 playerMovement.speed = defaultSpeed;
             }
         }
@@ -328,6 +346,8 @@ public class Gun : MonoBehaviour
                 mainCamera.fieldOfView = scoppedFOV;
                 defaultMS = mouseLook.mouseSensitivity;
                 mouseLook.mouseSensitivity = scoppedMS;
+                defaultshootPrecision = shootPrecision;
+                shootPrecision *= precisionIncrease;
                 defaultSpeed = playerMovement.speed;
                 playerMovement.speed = scoppedSpeed;
             }
@@ -338,6 +358,7 @@ public class Gun : MonoBehaviour
                 anim.SetBool("Scoped", false);
                 mainCamera.fieldOfView = defaultFOV;
                 mouseLook.mouseSensitivity = defaultMS;
+                shootPrecision = defaultshootPrecision;
                 playerMovement.speed = defaultSpeed;
             }
         }

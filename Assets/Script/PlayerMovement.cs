@@ -45,6 +45,9 @@ public class PlayerMovement : MonoBehaviour
     private Gun gunPistol;
     private Gun gunM4_Carbine;
     private Gun gunShotgun;
+    private Gun gun;
+    private float changeTime;
+    public float changeCooldown;
 
     private void Start()
     {
@@ -92,79 +95,107 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(velocity * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && haveCarbine)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && haveCarbine && M4_Carbine.activeSelf == false && Time.time > changeTime + changeCooldown)
         {
+            if (gunL96_Rifle.aimed || gunPistol.aimed || gunShotgun.aimed)
+            {
+                gun = GetComponentInChildren<Gun>();
+                StartCoroutine(gun.Scop());
+            }
+
             GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
-            M4_Carbine.SetActive(true);
+            
             Pistol.SetActive(false);
             L96_Rifle.SetActive(false);
             Shotgun.SetActive(false);
+            M4_Carbine.SetActive(true);
+
             gunM4_Carbine.crosshair.SetActive(true);
             gunL96_Rifle.crosshair.SetActive(false);
             gunPistol.crosshair.SetActive(false);
             gunShotgun.crosshair.SetActive(false);
 
-            if (gunL96_Rifle.aimed)
-            {
-                gunL96_Rifle.Scop();
-            }
+            changeTime = Time.time;
+            
             
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2) && havePistol)
+        if (Input.GetKeyDown(KeyCode.Alpha2) && havePistol && Pistol.activeSelf == false && Time.time > changeTime + changeCooldown)
         {
+
+            if (gunL96_Rifle.aimed || gunM4_Carbine.aimed || gunShotgun.aimed)
+            {
+                gun = GetComponentInChildren<Gun>();
+                StartCoroutine(gun.Scop());
+            }
+
             GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
-            Pistol.SetActive(true);
+            
             M4_Carbine.SetActive(false);
             L96_Rifle.SetActive(false);
             Shotgun.SetActive(false);
+            Pistol.SetActive(true);
+
             gunPistol.crosshair.SetActive(true);
             gunL96_Rifle.crosshair.SetActive(false);
             gunM4_Carbine.crosshair.SetActive(false);
             gunShotgun.crosshair.SetActive(false);
 
-            if (gunL96_Rifle.aimed)
-            {
-                gunL96_Rifle.Scop();
-            }
+            changeTime = Time.time;
+
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha3) && haveShotgun)
+        if (Input.GetKeyDown(KeyCode.Alpha3) && haveShotgun && Shotgun.activeSelf == false && Time.time > changeTime + changeCooldown)
         {
+            if (gunL96_Rifle.aimed || gunM4_Carbine.aimed || gunPistol.aimed)
+            {
+                gun = GetComponentInChildren<Gun>();
+                StartCoroutine(gun.Scop());
+            }
+
             GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
-            Shotgun.SetActive(true);
+            
             Pistol.SetActive(false);
             M4_Carbine.SetActive(false);
             L96_Rifle.SetActive(false);
+            Shotgun.SetActive(true);
+
             gunShotgun.crosshair.SetActive(true);
             gunL96_Rifle.crosshair.SetActive(false);
             gunM4_Carbine.crosshair.SetActive(false);
             gunPistol.crosshair.SetActive(false);
 
-            if (gunL96_Rifle.aimed)
-            {
-                gunL96_Rifle.Scop();
-            }
+            changeTime = Time.time;
+
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha4) && haveRifle)
+        if (Input.GetKeyDown(KeyCode.Alpha4) && haveRifle && L96_Rifle.activeSelf == false && Time.time > changeTime + changeCooldown)
         {
+            if (gunM4_Carbine.aimed || gunPistol.aimed || gunShotgun.aimed)
+            {
+                gun = GetComponentInChildren<Gun>();
+                StartCoroutine(gun.Scop());
+            }
+
             GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
-            L96_Rifle.SetActive(true);
+            
             Pistol.SetActive(false);
             M4_Carbine.SetActive(false);
             Shotgun.SetActive(false);
+            L96_Rifle.SetActive(true);
+
             gunShotgun.crosshair.SetActive(false);
             gunL96_Rifle.crosshair.SetActive(false);
             gunM4_Carbine.crosshair.SetActive(false);
             gunPistol.crosshair.SetActive(false);
-            
 
-            if (gunL96_Rifle.aimed)
+
+            if (gunM4_Carbine.aimed || gunPistol.aimed || gunShotgun.aimed)
             {
-                gunL96_Rifle.Scop();
+                gun = GetComponentInChildren<Gun>();
+                StartCoroutine(gun.Scop());
             }
-
+            changeTime = Time.time;
         }
 
     }
