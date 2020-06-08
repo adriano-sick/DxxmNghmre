@@ -64,7 +64,6 @@ public class Gun : MonoBehaviour
   void OnEnable()
   {
         isReloading = false;
-        
   }
 
     /*private void OnDisable()
@@ -133,10 +132,10 @@ public class Gun : MonoBehaviour
 
         }
 
-        if (Input.GetButtonDown("Fire1") && ammo == 0 && !isReloading)
+        /*if (Input.GetButtonDown("Fire1") && ammo == 0 && !isReloading)
         {
             gunSound.PlayOneShot(noAmmo, SFXVol * volFix);
-        }
+        }*/
 
 
 
@@ -146,7 +145,7 @@ public class Gun : MonoBehaviour
 
         }
 
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2") && !isReloading)
         {
             StartCoroutine(Scop()); 
         }

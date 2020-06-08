@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // next steps: Create animation and sound when got gun && Clean code
+    // next steps: Clean code/search for bugs && Start HUD
     // Start is called before the first frame update
     void Start()
     {

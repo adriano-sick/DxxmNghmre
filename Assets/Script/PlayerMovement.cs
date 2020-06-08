@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
 
-    Vector3 velocity;
+    private Vector3 velocity;
     private bool isGrounded;
 
     public float health = 100f;
@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject deathCam;
 
     public AudioClip gotMagSound;
+    public AudioClip gunChange;
     private AudioSource playerSound;
 
     public int pistolMag;
@@ -67,8 +68,8 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
 
+        gun = GetComponentInChildren<Gun>();
         if (isAlive)
         {
             isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -95,13 +96,14 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(velocity * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && haveCarbine && M4_Carbine.activeSelf == false && Time.time > changeTime + changeCooldown)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && haveCarbine && M4_Carbine.activeSelf == false && Time.time > changeTime + changeCooldown && !gun.isReloading)
         {
             if (gunL96_Rifle.aimed || gunPistol.aimed || gunShotgun.aimed)
-            {
-                gun = GetComponentInChildren<Gun>();
+            {                
                 StartCoroutine(gun.Scop());
             }
+
+            playerSound.PlayOneShot(gunChange, 1f);
 
             GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
             
@@ -120,14 +122,14 @@ public class PlayerMovement : MonoBehaviour
             
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2) && havePistol && Pistol.activeSelf == false && Time.time > changeTime + changeCooldown)
+        if (Input.GetKeyDown(KeyCode.Alpha2) && havePistol && Pistol.activeSelf == false && Time.time > changeTime + changeCooldown && !gun.isReloading)
         {
 
             if (gunL96_Rifle.aimed || gunM4_Carbine.aimed || gunShotgun.aimed)
             {
-                gun = GetComponentInChildren<Gun>();
                 StartCoroutine(gun.Scop());
             }
+            playerSound.PlayOneShot(gunChange, 1f);
 
             GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
             
@@ -145,14 +147,13 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha3) && haveShotgun && Shotgun.activeSelf == false && Time.time > changeTime + changeCooldown)
+        if (Input.GetKeyDown(KeyCode.Alpha3) && haveShotgun && Shotgun.activeSelf == false && Time.time > changeTime + changeCooldown && !gun.isReloading)
         {
             if (gunL96_Rifle.aimed || gunM4_Carbine.aimed || gunPistol.aimed)
             {
-                gun = GetComponentInChildren<Gun>();
                 StartCoroutine(gun.Scop());
             }
-
+            playerSound.PlayOneShot(gunChange, 1f);
             GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
             
             Pistol.SetActive(false);
@@ -169,14 +170,13 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha4) && haveRifle && L96_Rifle.activeSelf == false && Time.time > changeTime + changeCooldown)
+        if (Input.GetKeyDown(KeyCode.Alpha4) && haveRifle && L96_Rifle.activeSelf == false && Time.time > changeTime + changeCooldown && !gun.isReloading)
         {
             if (gunM4_Carbine.aimed || gunPistol.aimed || gunShotgun.aimed)
             {
-                gun = GetComponentInChildren<Gun>();
                 StartCoroutine(gun.Scop());
             }
-
+            playerSound.PlayOneShot(gunChange, 1f);
             GetComponentInChildren<Gun>().gunFlashLight.SetActive(false);
             
             Pistol.SetActive(false);
