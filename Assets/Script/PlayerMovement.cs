@@ -200,14 +200,18 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
-        
-
         if (other.gameObject.name == "FlameThrowerCollider")
         {
             TakeDamage(mummyDamage);
         }
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        
+
+        
 
         if (other.gameObject.tag == "PistolMagazine")
         {
