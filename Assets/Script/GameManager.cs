@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-//using System.Linq;
-//using System.Numerics;
 using UnityEngine.UI;
-//using NUnit.Framework;
 
 public class GameManager : MonoBehaviour
 {
-    // next steps: Clean code/search for bugs && Start HUD
+    // next steps: Create an miniMap on HUD
     public TextMeshProUGUI ammoText;
     public TextMeshProUGUI healthText;
     public GameObject weaponHolder;
@@ -133,9 +130,7 @@ public class GameManager : MonoBehaviour
                 hasShotgun.color = new Color32(0, 255, 255, 255);
                 hasRifle.color = new Color32(0, 255, 255, 110);
             }
-        }
-
-        
+        }       
 
         
     }
