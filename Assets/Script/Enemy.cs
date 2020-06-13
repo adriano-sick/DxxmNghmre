@@ -7,23 +7,22 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
 
-    public float health = 50f;
     private NavMeshAgent meshNav;
+    private AudioSource enemySound;
+    private Animator anim;
+
+    public GameObject fire;
     public GameObject player;
+    public AudioClip GunSound = null;
+    public AudioClip followSound = null;
+    public float health = 50f;    
     public float followDistance = 20.0f;
-    public float limitDistance = 2.0f;
     public float attackDistance = 6.0f;
     [Range(0.0f, 1.0f)]
     public float attackProbability = 100f;
-    [Range(0.0f, 1.0f)]
-    public float hitAccuracy = 0.5f;
-    public float damagePoints = 2.0f;
-    public AudioClip GunSound = null;
-    public AudioClip followSound = null;
-    private AudioSource enemySound;
-    public GameObject fire;
+    [Range(0.0f, 1.0f)]  
     public Vector3 fireOffset = new Vector3(0, 3, 0);
-    private Animator anim;
+    
 
     void Start()
     {
@@ -82,7 +81,7 @@ public class Enemy : MonoBehaviour
 
         else if(GameObject.Find("First Person Player") == null)
         {
-            
+            anim.SetBool("dancing", true);
         }
         
     }
@@ -113,7 +112,7 @@ public class Enemy : MonoBehaviour
         anim.SetBool("takeDamage", true);
 
     }
-
+    
     void Die()
     {
                 

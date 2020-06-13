@@ -66,17 +66,7 @@ public class Gun : MonoBehaviour
         isReloading = false;
   }
 
-    /*private void OnDisable()
-    {
-        
-        if (aimed)
-        {
-            StartCoroutine(Scop());
-            Debug.Log("aim disable");
-        }
-    }*/
-
-
+   
     // Update is called once per frame
     void Update()
     {
@@ -132,10 +122,10 @@ public class Gun : MonoBehaviour
 
         }
 
-        /*if (Input.GetButtonDown("Fire1") && ammo == 0 && !isReloading)
+        if (Input.GetButtonDown("Fire1") && ammo == 0 && !isReloading)
         {
             gunSound.PlayOneShot(noAmmo, SFXVol * volFix);
-        }*/
+        }
 
 
 
@@ -180,7 +170,7 @@ public class Gun : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, direction, out hit, range))
         {
-            Debug.Log(hit.transform.name + fpsCam.transform.forward + direction);
+            //Debug.Log(hit.transform.name + fpsCam.transform.forward + direction);
 
             Enemy enemy = hit.transform.GetComponent<Enemy>();
             if (enemy != null)
