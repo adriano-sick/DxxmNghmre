@@ -97,38 +97,38 @@ public class GameManager : MonoBehaviour
             if (activeGun.gameObject.name == "Pistol")
             {
                 currentMag = playerMovement.pistolMag;
-                hasCarbine.color = new Color32(0, 255, 255, 110);
-                hasPistol.color = new Color32(0, 255, 255, 255);
-                hasShotgun.color = new Color32(0, 255, 255, 110);
-                hasRifle.color = new Color32(0, 255, 255, 110);
+                hasCarbine.color = new Color32(0, 0, 0, 110);
+                hasPistol.color = new Color32(0, 0, 0, 255);
+                hasShotgun.color = new Color32(0, 0, 0, 110);
+                hasRifle.color = new Color32(0, 0, 0, 110);
 
             }
 
             else if (activeGun.gameObject.name == "M4_Carbine")
             {
                 currentMag = playerMovement.carbineMag;
-                hasCarbine.color = new Color32(0, 255, 255, 255);
-                hasPistol.color = new Color32(0, 255, 255, 110);
-                hasShotgun.color = new Color32(0, 255, 255, 110);
-                hasRifle.color = new Color32(0, 255, 255, 110);
+                hasCarbine.color = new Color32(0, 0, 0, 255);
+                hasPistol.color = new Color32(0, 0, 0, 110);
+                hasShotgun.color = new Color32(0, 0, 0, 110);
+                hasRifle.color = new Color32(0, 0, 0, 110);
             }
 
             else if (activeGun.gameObject.name == "L96_Rifle")
             {
                 currentMag = playerMovement.rifleMag;
-                hasCarbine.color = new Color32(0, 255, 255, 110);
-                hasPistol.color = new Color32(0, 255, 255, 110);
-                hasShotgun.color = new Color32(0, 255, 255, 110);
-                hasRifle.color = new Color32(0, 255, 255, 255);
+                hasCarbine.color = new Color32(0, 0, 0, 110);
+                hasPistol.color = new Color32(0, 0, 0, 110);
+                hasShotgun.color = new Color32(0, 0, 0, 110);
+                hasRifle.color = new Color32(0, 0, 0, 255);
             }
 
             else if (activeGun.gameObject.name == "870_Shotgun")
             {
                 currentMag = playerMovement.shotgunMag;
-                hasCarbine.color = new Color32(0, 255, 255, 110);
-                hasPistol.color = new Color32(0, 255, 255, 110);
-                hasShotgun.color = new Color32(0, 255, 255, 255);
-                hasRifle.color = new Color32(0, 255, 255, 110);
+                hasCarbine.color = new Color32(0, 0, 0, 110);
+                hasPistol.color = new Color32(0, 0, 0, 110);
+                hasShotgun.color = new Color32(0, 0, 0, 255);
+                hasRifle.color = new Color32(0, 0, 0, 110);
             }
         }       
 

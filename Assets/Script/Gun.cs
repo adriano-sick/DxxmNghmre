@@ -219,6 +219,7 @@ public class Gun : MonoBehaviour
             ammo += (maxAmmo - ammo);
             playerMovement.pistolMag -= 1;
             isReloading = false;
+            anim.SetTrigger("Idle");
 
         }
 
@@ -239,6 +240,7 @@ public class Gun : MonoBehaviour
             ammo += (maxAmmo - ammo);
             playerMovement.carbineMag -= 1;
             isReloading = false;
+            anim.SetTrigger("Idle");
         }
 
         if (gameObject.tag == "Rifle" && playerMovement.rifleMag > 0 && maxAmmo > ammo)
@@ -256,6 +258,7 @@ public class Gun : MonoBehaviour
             ammo += (maxAmmo - ammo);
             playerMovement.rifleMag -= 1;
             isReloading = false;
+            anim.SetTrigger("Idle");
         }
 
         if (gameObject.tag == "Repetition" && playerMovement.shotgunMag > 0 && maxAmmo > ammo)
